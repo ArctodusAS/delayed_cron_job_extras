@@ -24,6 +24,7 @@ task :cron_setup => :environment do
   puts "Updating delayed cron job "
   Delayed::JobMaintainer.update_jobs
 end
+```
 
 Capistrano example:  
 ```
@@ -45,6 +46,17 @@ class ApplicationJob < ActiveJob::Base
 
   before_enqueue do |job|
     job.cron = self.class.cron
+  end
+end
+```
+Specify cron in the job classes:  
+```
+class MyRepeatedJob < ApplicationJob
+  def self.cron
+    '0 11 * * *'
+  end
+
+  def perform
   end
 end
 ```
