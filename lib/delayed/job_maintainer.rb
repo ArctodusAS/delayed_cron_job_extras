@@ -33,7 +33,7 @@ class Delayed::JobMaintainer
 
   def self.update_existing(existing, klass)
     queue = klass.new.queue_name
-    priority = Delayed::Worker.queue_attributes[queue]['priority']
+    priority = Delayed::Worker.queue_attributes.dig(queue, 'priority') || 0
     existing.queue = queue
     existing.priority = priority
     existing.cron = klass.cron
