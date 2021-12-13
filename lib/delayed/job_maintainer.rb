@@ -1,4 +1,6 @@
 class Delayed::JobMaintainer
+  CRON_JOBS_PATH = 'app/jobs/cron/**/*.rb'.freeze
+  RB_EXTENSION_REGEXP = /\.rb\z/.freeze
 
   def self.update_jobs
     delete_jobs_with_no_job_class
@@ -45,8 +47,8 @@ class Delayed::JobMaintainer
   end
 
   def self.job_classes
-    Dir[Rails.root + "app/jobs/cron/*.rb"].map do |path|
-      path.split("/").last.split(".").first.camelcase.constantize
+    Dir[CRON_JOBS_PATH].map do |path|
+      path.gsub(RB_EXTENSION_REGEXP, '').split('/').drop(CRON_JOBS_PATH.count('/') - 1).map(&:camelcase).join('::').constantize
     end
   end
 end
