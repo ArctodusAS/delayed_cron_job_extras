@@ -7,6 +7,7 @@ require 'delayed_cron_job'
 require 'delayed_cron_job_extras'
 
 require_relative '../app/jobs/cron/my_repeated_job.rb'
+require_relative '../app/jobs/cron/prefixed_my_repeated_job.rb'
 
 Delayed::Worker.logger = Logger.new("/tmp/dj.log")
 ENV["RAILS_ENV"] = "test"
