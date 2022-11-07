@@ -6,7 +6,7 @@ class Delayed::JobMaintainer
     delete_jobs_with_no_job_class
     job_classes.each do |klass|
       next if klass.cron.blank?
-      if (existing = cron_jobs.where("handler LIKE ?", "%#{klass}%").first)
+      if (existing = cron_jobs.where("handler LIKE ?", "%job_class: #{klass}%").first)
         update_existing(existing, klass)
       else # create new
         klass.perform_later
