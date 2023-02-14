@@ -27,7 +27,8 @@ class Delayed::JobMaintainer
   # Jobs that have been deleted or renamed
   def self.delete_jobs_with_no_job_class
     cron_jobs.each do |job|
-      job_class = Psych.load(job.handler).job_data['job_class']
+      permitted = [ActiveJob::QueueAdapters::DelayedJobAdapter::JobWrapper]
+      job_class = Psych.safe_load(job.handler, permitted_classes: permitted).job_data['job_class']
       next if job_classes.collect(&:to_s).include?(job_class)
       job.destroy
     end
