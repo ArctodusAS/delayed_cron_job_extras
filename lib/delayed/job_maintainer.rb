@@ -5,7 +5,7 @@ class Delayed::JobMaintainer
   def self.update_jobs
     delete_jobs_with_no_job_class
     job_classes.each do |klass|
-      next if klass.cron.blank?
+      next if klass::CRON.blank?
       if (existing = cron_jobs.where("handler LIKE ?", "%job_class: #{klass}%").first)
         update_existing(existing, klass)
       else # create new
@@ -39,7 +39,7 @@ class Delayed::JobMaintainer
     priority = Delayed::Worker.queue_attributes.dig(queue, 'priority') || 0
     existing.queue = queue
     existing.priority = priority
-    existing.cron = klass.cron
+    existing.cron = klass::CRON
     existing.save!
   end
 

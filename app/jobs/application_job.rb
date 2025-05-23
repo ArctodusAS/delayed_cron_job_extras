@@ -1,9 +1,8 @@
 class ApplicationJob < ActiveJob::Base
+  CRON = nil
   self.queue_adapter = :delayed_job
 
-  def self.cron; end
-
   before_enqueue do |job|
-    job.cron = self.class.cron
+    job.cron = self.class::CRON
   end
 end
