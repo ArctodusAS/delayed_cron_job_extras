@@ -1,5 +1,9 @@
 # Delayed cron job exras
 
+## Count consecutive cron failures
+
+For cron jobs, `attempts` counts consecutive failed runs and resets to `0` after a successful run. Runs are still scheduled on the cron cadence, and non-cron retry behavior is unchanged.
+
 ## Track running time and memory usage:  
 
 initializers/delayed_job.rb:
